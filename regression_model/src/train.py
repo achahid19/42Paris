@@ -86,7 +86,7 @@ print('++++++++++++++++++++++++++++++++++++++++++++++')
 
 # Save model parameters into new csv file so it can be used by prediction program
 # create if not exists, otherwise overwrite it
-with open('model.csv', 'w', newline='', encoding='utf-8') as csvfile:
+with open('data/model.csv', 'w', newline='', encoding='utf-8') as csvfile:
     model_writer = csv.writer(csvfile, delimiter=',')
     model_writer.writerow(['weight', 'bias'])
     model_writer.writerow([weight / max_mileage, bias])
