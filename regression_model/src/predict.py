@@ -7,7 +7,7 @@ weight: float = 0
 bias: float = 0
 
 # Read model parameters from 'model.csv'
-model_path = 'data/model.csv'
+model_path = '../data/model.csv'
 if p(model_path).exists():
     with open(model_path, newline='', encoding='utf-8') as csvfile:
         data = csv.reader(csvfile, delimiter=',')

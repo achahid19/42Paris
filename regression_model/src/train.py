@@ -1,7 +1,8 @@
 import csv
+import matplotlib.pyplot as plt
+from utils import load_data
+import utils as u
 
-prices: list[float] = []
-mileages: list[float] = []
 # Feature scaling used for gradient descent and normalize mileages to [0, 1] range. 
 # this is done to avoid large values of mileages which can lead to large gradients
 # and cause the model to diverge during training
@@ -10,16 +11,15 @@ scaled_mileages: list[float] = []
 weight: float = 0.0
 bias: float = 0.0
 learning_rate: float = 0.1
-epochs = 10000
+epochs = 1
 printing_interval = epochs // 10 # use '//' for integers division
 
-# Read Data
-with open('data/data.csv', newline='', encoding='utf-8') as csvfile:
-    dataset = csv.reader(csvfile, delimiter=',')
-    next(dataset)
-    for row in dataset:
-        mileages.append(float(row[0]))
-        prices.append(float(row[1]))
+# Get training data
+try:
+    mileages, prices = load_data("../data/data.csv")
+except (ValueError, FileNotFoundError, StopIteration, IndexError) as e:
+    print(f"{u.RED}Error loading dataset: {e}{u.RESET}")
+    raise SystemExit(1)
 
 cars_nums = len(prices)
 max_mileage = max(mileages)
@@ -73,20 +73,37 @@ for i in range(epochs):
         print('*****************************************************')
 
 # model parameters after training end
+original_weight = weight / max_mileage
+
 print('++++++++++++++++++++++++++++++++++++++++++++++')
 print(f'model bias: {bias}')
-print(f'model weight: {weight / max_mileage}') # unscale the weight
+print(f'model weight: {original_weight}') # unscale the weight
 
 # test predictions #
 # scaled mileage
 print(f'prediction 1: {weight * (240_000 / max_mileage) + bias}')
 # unscaled weight
-print(f'prediction 2: {(weight / max_mileage) * 240_000 + bias}')
+print(f'prediction 2: {(original_weight) * 240_000 + bias}')
 print('++++++++++++++++++++++++++++++++++++++++++++++')
 
 # Save model parameters into new csv file so it can be used by prediction program
 # create if not exists, otherwise overwrite it
-with open('data/model.csv', 'w', newline='', encoding='utf-8') as csvfile:
+with open('../data/model.csv', 'w', newline='', encoding='utf-8') as csvfile:
     model_writer = csv.writer(csvfile, delimiter=',')
     model_writer.writerow(['weight', 'bias'])
-    model_writer.writerow([weight / max_mileage, bias])
+    model_writer.writerow([original_weight, bias])
+
+# visualize dataset and linear regression
+
+# Predicted prices
+predicted_prices = []
+for mileage in mileages:
+    predicted_prices.append(mileage * original_weight + bias)
+
+""" plt.scatter(x=mileages, y=prices)
+plt.plot(mileages, predicted_prices, color='red', label='Regression line')
+plt.xlabel('Feature(Mileage) in KM')
+plt.ylabel('Target(Price) in $')
+plt.title('Cars Mileages/Prices')
+plt.show() """
+
