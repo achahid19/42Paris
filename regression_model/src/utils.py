@@ -1,4 +1,6 @@
 import csv
+from pathlib import Path
+from config import MODEL_PATH
 
 RED = '\033[31m'
 GREEN = '\033[32m'
@@ -19,7 +21,6 @@ def load_data(file_path: str | Path) -> tuple[list[float], list[float]]:
         ValueError: If the dataset is empty or contains invalid numbers.
         FileNotFoundError: If the dataset file does not exist.
     """
-    # resolve parent dir of cwd
     col1: list[float] = []
     col2: list[float] = []
 
@@ -34,3 +35,38 @@ def load_data(file_path: str | Path) -> tuple[list[float], list[float]]:
         raise ValueError("Dataset is empty")
 
     return (col1, col2)
+
+# Feature scaling used for gradient descent and normalize mileages to [0, 1] range. 
+# this is done to avoid large values of mileages which can lead to large gradients
+# and cause the model to diverge during training
+def scale_feature(values: list[float]) -> list[float]:
+    """Scale non-negative numerical values by their maximum (max scaling).
+
+    Args:
+        values: Non-empty list of non-negative numerical values.
+
+    Returns:
+        A new list containing the scaled values.
+    """
+    print('scaling')
+    print(values)
+    scaled_list: list[float] = []
+    max_value = max(values)
+
+    for value in values:
+        scaled_list.append(value / max_value)
+
+    return scaled_list
+
+def save_model_params(w: float, b: float) -> None:
+    """
+        Save the model parameters (weight and bias) to a CSV file. 
+
+        Args:
+            w: Model weight.
+            b: Model bias.
+    """
+    with open(MODEL_PATH, 'w', newline='', encoding='utf-8') as csvfile:
+        model_writer = csv.writer(csvfile, delimiter=',')
+        model_writer.writerow(['weight', 'bias'])
+        model_writer.writerow([w, b])
