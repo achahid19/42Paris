@@ -2,7 +2,7 @@ from utils import load_data, scale_feature, save_model_params
 from config import DATA_PATH
 from model import compute_gradients
 import utils as u
-import matplotlib.pyplot as plt
+from visualize import plot_data
 
 weight: float = 0.0
 bias: float = 0.0
@@ -36,17 +36,5 @@ print('++++++++++++++++++++++++++++++++++++++++++++++')
 print(f'model bias: {bias}')
 print(f'model weight: {original_weight}')
 
-# visualize dataset and linear regression
-
-# Predicted prices
-predicted_prices = []
-for mileage in mileages:
-    predicted_prices.append(mileage * original_weight + bias)
-
-plt.scatter(x=mileages, y=prices)
-plt.plot(mileages, predicted_prices, color='red', label='Regression line')
-plt.xlabel('Feature(Mileage) in KM')
-plt.ylabel('Target(Price) in $')
-plt.title('Cars Mileages/Prices')
-plt.show()
-
+# visualize data
+plot_data(mileages, prices, original_weight, bias)

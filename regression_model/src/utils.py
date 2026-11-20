@@ -7,7 +7,6 @@ GREEN = '\033[32m'
 BLUE  = "\033[34m"
 RESET = '\033[0m'
 
-
 def load_data(file_path: str | Path) -> tuple[list[float], list[float]]:
     """Load car mileages and prices from a CSV file.
 
