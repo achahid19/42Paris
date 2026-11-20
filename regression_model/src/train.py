@@ -2,7 +2,7 @@ from utils import load_data, scale_feature, save_model_params
 from config import DATA_PATH
 from model import compute_gradients
 import utils as u
-from visualize import plot_data
+from bonus.visualize import plot_data
 import sys
 
 weight: float = 0.0

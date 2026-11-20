@@ -1,7 +1,12 @@
+from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from metrics import compute_mae, compute_mse
 import utils as u
 from utils import load_data
 from config import DATA_PATH
-from metrics import compute_mae, compute_mse
+
 
 # Load Model params (w, b)
 try:
