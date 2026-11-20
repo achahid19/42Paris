@@ -7,6 +7,15 @@ GREEN = '\033[32m'
 BLUE  = "\033[34m"
 RESET = '\033[0m'
 
+def load_model_params() -> tuple[float, float]:
+    if MODEL_PATH.exists():
+        with open(MODEL_PATH, newline='', encoding='utf-8') as csvfile:
+            data = csv.reader(csvfile, delimiter=',')
+            next(data)
+            return map(float, next(data))
+    
+    raise FileNotFoundError('Can\'t find model\'s params file!')
+
 def load_data(file_path: str | Path) -> tuple[list[float], list[float]]:
     """Load car mileages and prices from a CSV file.
 
@@ -47,8 +56,6 @@ def scale_feature(values: list[float]) -> list[float]:
     Returns:
         A new list containing the scaled values.
     """
-    print('scaling')
-    print(values)
     scaled_list: list[float] = []
     max_value = max(values)
 

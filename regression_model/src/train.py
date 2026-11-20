@@ -32,7 +32,6 @@ max_mileage = max(mileages)
 original_weight = weight / max_mileage
 save_model_params(original_weight, bias)
 
-print('++++++++++++++++++++++++++++++++++++++++++++++')
 print(f'model bias: {bias}')
 print(f'model weight: {original_weight}')
 

@@ -1,22 +1,16 @@
 import utils as u
-from pathlib import Path as p
-import csv
-from config import MODEL_PATH
-
-# Model parameters initialized to zero
-weight: float = 0.0
-bias: float = 0.0
+from model import estimate_price
 
 # Read model parameters from 'model.csv'
-if MODEL_PATH.exists():
-    with open(MODEL_PATH, newline='', encoding='utf-8') as csvfile:
-        data = csv.reader(csvfile, delimiter=',')
-        next(data)
-        weight, bias = map(float, next(data))
+try:
+    weight, bias = u.load_model_params()
+except FileNotFoundError as e:
+    print(f'{u.RED}Error: {e}{u.RESET}')
+    raise SystemExit(1)
 
 while True:
     try:
-        mileage = float(input(f'{u.BLUE}Enter the mileage of the car in KM: {u.RESET}')) # feature
+        mileage = float(input(f'{u.BLUE}Enter the mileage of the car in KM: {u.RESET}'))
         if mileage < 0:
             print(f'{u.RED}Mileage cannot be negative !{u.RESET}')
             continue
@@ -27,6 +21,6 @@ while True:
         break
     else:
         # Prediction model, compute target
-        predicted_price = weight * mileage + bias
+        predicted_price = estimate_price(mileage, weight, bias)
         print(f'{u.GREEN}Prediction price: {predicted_price}${u.RESET}')
         break
