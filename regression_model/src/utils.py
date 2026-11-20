@@ -1,5 +1,4 @@
 import csv
-from pathlib import Path
 
 RED = '\033[31m'
 GREEN = '\033[32m'
@@ -7,7 +6,7 @@ BLUE  = "\033[34m"
 RESET = '\033[0m'
 
 
-def load_data(file_path: str) -> tuple[list[float], list[float]]:
+def load_data(file_path: str | Path) -> tuple[list[float], list[float]]:
     """Load car mileages and prices from a CSV file.
 
     Args:
@@ -20,6 +19,7 @@ def load_data(file_path: str) -> tuple[list[float], list[float]]:
         ValueError: If the dataset is empty or contains invalid numbers.
         FileNotFoundError: If the dataset file does not exist.
     """
+    # resolve parent dir of cwd
     col1: list[float] = []
     col2: list[float] = []
 

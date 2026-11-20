@@ -1,6 +1,7 @@
 import csv
 import matplotlib.pyplot as plt
 from utils import load_data
+from config import DATA_PATH, MODEL_PATH
 import utils as u
 
 # Feature scaling used for gradient descent and normalize mileages to [0, 1] range. 
@@ -11,12 +12,12 @@ scaled_mileages: list[float] = []
 weight: float = 0.0
 bias: float = 0.0
 learning_rate: float = 0.1
-epochs = 1
+epochs = 100
 printing_interval = epochs // 10 # use '//' for integers division
 
 # Get training data
 try:
-    mileages, prices = load_data("../data/data.csv")
+    mileages, prices = load_data(DATA_PATH)
 except (ValueError, FileNotFoundError, StopIteration, IndexError) as e:
     print(f"{u.RED}Error loading dataset: {e}{u.RESET}")
     raise SystemExit(1)
@@ -88,7 +89,7 @@ print('++++++++++++++++++++++++++++++++++++++++++++++')
 
 # Save model parameters into new csv file so it can be used by prediction program
 # create if not exists, otherwise overwrite it
-with open('../data/model.csv', 'w', newline='', encoding='utf-8') as csvfile:
+with open(MODEL_PATH, 'w', newline='', encoding='utf-8') as csvfile:
     model_writer = csv.writer(csvfile, delimiter=',')
     model_writer.writerow(['weight', 'bias'])
     model_writer.writerow([original_weight, bias])

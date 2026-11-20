@@ -1,15 +1,15 @@
 import utils as u
 from pathlib import Path as p
 import csv
+from config import MODEL_PATH
 
 # Model parameters initialized to zero
-weight: float = 0
-bias: float = 0
+weight: float = 0.0
+bias: float = 0.0
 
 # Read model parameters from 'model.csv'
-model_path = '../data/model.csv'
-if p(model_path).exists():
-    with open(model_path, newline='', encoding='utf-8') as csvfile:
+if MODEL_PATH.exists():
+    with open(MODEL_PATH, newline='', encoding='utf-8') as csvfile:
         data = csv.reader(csvfile, delimiter=',')
         next(data)
         weight, bias = map(float, next(data))
