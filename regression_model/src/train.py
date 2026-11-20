@@ -3,6 +3,7 @@ from config import DATA_PATH
 from model import compute_gradients
 import utils as u
 from visualize import plot_data
+import sys
 
 weight: float = 0.0
 bias: float = 0.0
@@ -36,4 +37,5 @@ print(f'model bias: {bias}')
 print(f'model weight: {original_weight}')
 
 # visualize data
-plot_data(mileages, prices, original_weight, bias)
+if "--plot" in sys.argv:
+    plot_data(mileages, prices, original_weight, bias)
