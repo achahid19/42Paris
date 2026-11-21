@@ -1,12 +1,14 @@
 import utils as u
 from model import estimate_price
 
+weight: float
+bias: float
+
 # Read model parameters from 'model.csv'
 try:
     weight, bias = u.load_model_params()
-except FileNotFoundError as e:
-    print(f'{u.RED}Error: {e}{u.RESET}')
-    raise SystemExit(1)
+except FileNotFoundError:
+    weight, bias = 0.0, 0.0
 
 while True:
     try:
